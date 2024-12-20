@@ -1,7 +1,7 @@
-package com.sungjin.airquailitymonitordemo.dto.response;
+package com.sungjin.airquailitymonitordemo.dto.response.device;
 
 import com.sungjin.airquailitymonitordemo.dto.DeviceLocationDto;
-import com.sungjin.airquailitymonitordemo.dto.TransmissionMode;
+import com.sungjin.airquailitymonitordemo.entity.enums.TransmissionMode;
 
 import java.time.LocalDateTime;
 

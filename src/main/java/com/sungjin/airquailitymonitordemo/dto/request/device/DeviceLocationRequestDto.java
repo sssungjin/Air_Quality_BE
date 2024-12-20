@@ -1,4 +1,4 @@
-package com.sungjin.airquailitymonitordemo.dto.request;
+package com.sungjin.airquailitymonitordemo.dto.request.device;
 
 public record DeviceLocationRequestDto(
         Integer floorLevel,

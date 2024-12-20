@@ -1,16 +1,15 @@
 package com.sungjin.airquailitymonitordemo.service;
 
 import com.sungjin.airquailitymonitordemo.dto.DeviceLocationDto;
-import com.sungjin.airquailitymonitordemo.dto.request.DeviceLocationRequestDto;
-import com.sungjin.airquailitymonitordemo.dto.request.DeviceRegistrationRequestDto;
-import com.sungjin.airquailitymonitordemo.dto.response.DeviceLocationResponseDto;
-import com.sungjin.airquailitymonitordemo.dto.response.DeviceRegistrationResponseDto;
-import com.sungjin.airquailitymonitordemo.dto.response.DeviceResponseDto;
+import com.sungjin.airquailitymonitordemo.dto.request.device.DeviceLocationRequestDto;
+import com.sungjin.airquailitymonitordemo.dto.request.device.DeviceRegistrationRequestDto;
+import com.sungjin.airquailitymonitordemo.dto.response.device.DeviceLocationResponseDto;
+import com.sungjin.airquailitymonitordemo.dto.response.device.DeviceRegistrationResponseDto;
+import com.sungjin.airquailitymonitordemo.dto.response.device.DeviceResponseDto;
 import com.sungjin.airquailitymonitordemo.entity.Device;
 import com.sungjin.airquailitymonitordemo.entity.Project;
 import com.sungjin.airquailitymonitordemo.repository.DeviceRepository;
 import com.sungjin.airquailitymonitordemo.repository.ProjectRepository;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

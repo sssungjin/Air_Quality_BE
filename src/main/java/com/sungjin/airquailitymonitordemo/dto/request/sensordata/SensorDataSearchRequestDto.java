@@ -1,4 +1,4 @@
-package com.sungjin.airquailitymonitordemo.dto.request;
+package com.sungjin.airquailitymonitordemo.dto.request.sensordata;
 
 import com.sungjin.airquailitymonitordemo.dto.DateRange;
 import com.sungjin.airquailitymonitordemo.dto.Location;

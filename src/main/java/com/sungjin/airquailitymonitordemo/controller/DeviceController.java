@@ -1,20 +1,15 @@
 package com.sungjin.airquailitymonitordemo.controller;
 
-import com.sungjin.airquailitymonitordemo.dto.request.DeviceLocationRequestDto;
-import com.sungjin.airquailitymonitordemo.dto.request.DeviceRegistrationRequestDto;
-import com.sungjin.airquailitymonitordemo.dto.request.SensorDataSearchRequestDto;
-import com.sungjin.airquailitymonitordemo.dto.response.DeviceLocationResponseDto;
-import com.sungjin.airquailitymonitordemo.dto.response.DeviceRegistrationResponseDto;
-import com.sungjin.airquailitymonitordemo.dto.response.DeviceResponseDto;
-import com.sungjin.airquailitymonitordemo.dto.response.SensorDataResponseDto;
+import com.sungjin.airquailitymonitordemo.dto.request.device.DeviceLocationRequestDto;
+import com.sungjin.airquailitymonitordemo.dto.request.device.DeviceRegistrationRequestDto;
+import com.sungjin.airquailitymonitordemo.dto.response.device.DeviceLocationResponseDto;
+import com.sungjin.airquailitymonitordemo.dto.response.device.DeviceRegistrationResponseDto;
+import com.sungjin.airquailitymonitordemo.dto.response.device.DeviceResponseDto;
 import com.sungjin.airquailitymonitordemo.entity.SensorData;
 import com.sungjin.airquailitymonitordemo.service.DeviceService;
 import com.sungjin.airquailitymonitordemo.service.SensorDataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

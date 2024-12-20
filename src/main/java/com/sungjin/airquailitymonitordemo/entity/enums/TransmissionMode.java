@@ -1,4 +1,4 @@
-package com.sungjin.airquailitymonitordemo.dto;
+package com.sungjin.airquailitymonitordemo.entity.enums;
 
 public enum TransmissionMode {
     REALTIME,

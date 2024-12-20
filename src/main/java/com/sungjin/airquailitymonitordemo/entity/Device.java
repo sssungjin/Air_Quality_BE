@@ -1,6 +1,6 @@
 package com.sungjin.airquailitymonitordemo.entity;
 
-import com.sungjin.airquailitymonitordemo.dto.TransmissionMode;
+import com.sungjin.airquailitymonitordemo.entity.enums.TransmissionMode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

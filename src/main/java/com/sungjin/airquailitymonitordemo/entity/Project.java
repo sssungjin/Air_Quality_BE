@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "project")
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -22,17 +22,58 @@ public class Project implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
 
-    private String projectName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false) // 프로젝트 관리자 (PM)
+    private User pm;
 
-    @Column
+    @Column(nullable = false)
+    private String nationCode;
+
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String description;
 
-    @Column(name = "created_at")
+    @Column(nullable = false)
+    private LocalDateTime startDate;
+
+    @Column(nullable = false)
+    private LocalDateTime endDate;
+
+    @Column(nullable = false)
+    private String termsOfUse;  // 동의항목 이용약관
+
+    @Column
+    private String additionalTerms; // 추가 이용약관
+
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<SensorData> sensorDataList;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Device> devices;
+
+    // 데이터 수정 메서드 (Setter 대신 사용)
+    public void updateProjectDetails(String title, String description) {
+        if (title != null) {
+            this.title = title;
+        }
+        if (description != null) {
+            this.description = description;
+        }
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

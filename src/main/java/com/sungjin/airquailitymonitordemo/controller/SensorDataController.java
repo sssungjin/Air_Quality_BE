@@ -2,10 +2,10 @@ package com.sungjin.airquailitymonitordemo.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sungjin.airquailitymonitordemo.dto.request.SensorDataRequestDto;
-import com.sungjin.airquailitymonitordemo.dto.request.SensorDataSearchRequestDto;
-import com.sungjin.airquailitymonitordemo.dto.response.SensorDataUploadResponseDto;
-import com.sungjin.airquailitymonitordemo.dto.response.SensorDataResponseDto;
+import com.sungjin.airquailitymonitordemo.dto.request.sensordata.SensorDataRequestDto;
+import com.sungjin.airquailitymonitordemo.dto.request.sensordata.SensorDataSearchRequestDto;
+import com.sungjin.airquailitymonitordemo.dto.response.sensordata.SensorDataUploadResponseDto;
+import com.sungjin.airquailitymonitordemo.dto.response.sensordata.SensorDataResponseDto;
 import com.sungjin.airquailitymonitordemo.service.SensorDataService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

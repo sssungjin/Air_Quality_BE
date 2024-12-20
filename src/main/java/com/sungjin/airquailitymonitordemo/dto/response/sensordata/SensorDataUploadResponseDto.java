@@ -1,4 +1,4 @@
-package com.sungjin.airquailitymonitordemo.dto.response;
+package com.sungjin.airquailitymonitordemo.dto.response.sensordata;
 
 public record SensorDataUploadResponseDto(
         boolean success,

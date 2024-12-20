@@ -1,4 +1,4 @@
-package com.sungjin.airquailitymonitordemo.dto.request;
+package com.sungjin.airquailitymonitordemo.dto.request.sensordata;
 
 import java.time.LocalDateTime;
 

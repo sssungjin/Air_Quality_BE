@@ -1,8 +1,8 @@
 package com.sungjin.airquailitymonitordemo.service;
 
-import com.sungjin.airquailitymonitordemo.dto.request.ProjectEditRequestDto;
-import com.sungjin.airquailitymonitordemo.dto.response.ProjectListResponseDto;
-import com.sungjin.airquailitymonitordemo.dto.response.ProjectResponseDto;
+import com.sungjin.airquailitymonitordemo.dto.request.project.ProjectEditRequestDto;
+import com.sungjin.airquailitymonitordemo.dto.response.project.ProjectListResponseDto;
+import com.sungjin.airquailitymonitordemo.dto.response.project.ProjectResponseDto;
 import com.sungjin.airquailitymonitordemo.entity.Project;
 import com.sungjin.airquailitymonitordemo.exception.ServiceException;
 import com.sungjin.airquailitymonitordemo.repository.ProjectRepository;
@@ -38,7 +38,7 @@ public class ProjectService {
     private ProjectResponseDto convertToDto(Project project) {
         return new ProjectResponseDto(
                 project.getProjectId(),
-                project.getProjectName(),
+                project.getTitle(),
                 project.getDescription(),
                 project.getCreatedAt()
         );
@@ -55,20 +55,23 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + projectId));
 
-        project.setProjectName(request.projectName());
-        project.setDescription(request.description());
+        // setter 대신 엔티티의 메서드 호출
+        project.updateProjectDetails(request.projectName(), request.description());
 
         Project updatedProject = projectRepository.save(project);
         return convertToDto(updatedProject);
     }
 
+    // 프로젝트 등록
     public ProjectResponseDto registerProject(ProjectEditRequestDto request) {
-        Project project = new Project();
-        project.setProjectName(request.projectName());
-        project.setDescription(request.description());
-        project.setCreatedAt(LocalDateTime.now());
+        Project project = Project.builder()
+                .title(request.projectName())
+                .description(request.description())
+                .createdAt(LocalDateTime.now())
+                .build();
 
         Project savedProject = projectRepository.save(project);
         return convertToDto(savedProject);
     }
+
 }

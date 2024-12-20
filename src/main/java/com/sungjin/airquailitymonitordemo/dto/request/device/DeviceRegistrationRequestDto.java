@@ -1,6 +1,6 @@
-package com.sungjin.airquailitymonitordemo.dto.request;
+package com.sungjin.airquailitymonitordemo.dto.request.device;
 
-import com.sungjin.airquailitymonitordemo.dto.TransmissionMode;
+import com.sungjin.airquailitymonitordemo.entity.enums.TransmissionMode;
 
 public record DeviceRegistrationRequestDto(
         String deviceId,

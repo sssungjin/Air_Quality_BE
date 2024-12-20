@@ -1,4 +1,4 @@
-package com.sungjin.airquailitymonitordemo.dto.request;
+package com.sungjin.airquailitymonitordemo.dto.request.project;
 
 public record ProjectEditRequestDto(
         String projectName,
