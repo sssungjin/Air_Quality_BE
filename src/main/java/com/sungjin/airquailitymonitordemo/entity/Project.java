@@ -42,7 +42,7 @@ public class Project implements Serializable {
     private LocalDateTime endDate;
 
     @Column(nullable = false)
-    private String termsOfUse;  // 동의항목 이용약관
+    private boolean termsOfUse;  // 동의항목 이용약관
 
     @Column
     private String additionalTerms; // 추가 이용약관
@@ -56,13 +56,19 @@ public class Project implements Serializable {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Device> devices;
 
+    @Column(name = "collection_method")
+    private String collectionMethod;
+
     // 데이터 수정 메서드 (Setter 대신 사용)
-    public void updateProjectDetails(String title, String description) {
+    public void updateProjectDetails(String title, String description, String collectionMethod) {
         if (title != null) {
             this.title = title;
         }
         if (description != null) {
             this.description = description;
+        }
+        if (collectionMethod != null) {
+            this.collectionMethod = collectionMethod;
         }
     }
 

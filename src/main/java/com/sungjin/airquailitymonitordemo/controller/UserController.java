@@ -1,5 +1,6 @@
 package com.sungjin.airquailitymonitordemo.controller;
 
+import com.sungjin.airquailitymonitordemo.dto.request.user.ParticipantRegistrationRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.request.user.UserLoginRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.request.user.UserRegistrationRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.request.user.UserUpdateRequestDto;
@@ -19,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -73,6 +75,7 @@ public class UserController {
      * 사용자 정보 조회 API
      */
     @GetMapping("/{id}")
+    @PreAuthorize("#id == authentication.principal.id or hasRole('ADMIN')")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
         try {
             UserResponseDto response = userService.getUserById(id);
@@ -128,15 +131,10 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id,
                                            @AuthenticationPrincipal CustomUserPrincipal userPrincipal) {
-
         try {
-            // 현재 인증된 사용자가 관리자만 삭제 가능하도록 처리
-            if (!userPrincipal.hasRole("ROLE_ADMIN")) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 권한 없음
-            }
-
             userService.deleteUser(id);
             return ResponseEntity.noContent().build();
         } catch (EntityNotFoundException e) {
@@ -144,6 +142,17 @@ public class UserController {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             log.error("Error deleting user: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/register-participant")
+    public ResponseEntity<UserResponseDto> registerParticipant(@Valid @RequestBody ParticipantRegistrationRequestDto request) {
+        try {
+            UserResponseDto response = userService.registerParticipant(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            log.error("Error registering participant: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.sungjin.airquailitymonitordemo.security.CustomUserPrincipal;
 
 @RestController
 @RequestMapping("/api/v1/devices")
@@ -23,10 +25,10 @@ public class DeviceController {
     private final SensorDataService sensorDataService;
     private final DeviceService deviceService;
 
-
     @GetMapping("/{deviceId}/latest")
     public ResponseEntity<SensorData> getLatestData(
-            @PathVariable String deviceId
+            @PathVariable String deviceId,
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal
     ) {
         try {
             SensorData latestData = sensorDataService.getLatestSensorData(deviceId);
@@ -54,7 +56,9 @@ public class DeviceController {
     @PostMapping("/{deviceId}/register")
     public ResponseEntity<DeviceRegistrationResponseDto> registerDevice(
             @PathVariable String deviceId,
-            @RequestBody DeviceRegistrationRequestDto request) {
+            @RequestBody DeviceRegistrationRequestDto request,
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal
+    ) {
         try {
             DeviceRegistrationResponseDto response = deviceService.registerDevice(deviceId, request);
             return ResponseEntity.ok(response);
@@ -67,7 +71,9 @@ public class DeviceController {
     @PutMapping("/{deviceId}/location")
     public ResponseEntity<DeviceLocationResponseDto> updateDeviceLocationInfo(
             @PathVariable String deviceId,
-            @RequestBody DeviceLocationRequestDto request) {
+            @RequestBody DeviceLocationRequestDto request,
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal
+    ) {
         log.info("Received location update request for device {}: {}", deviceId, request);
         try {
             DeviceLocationResponseDto response = deviceService.updateDeviceLocation(deviceId, request);
@@ -80,7 +86,9 @@ public class DeviceController {
 
     @GetMapping("/{deviceId}/location")
     public ResponseEntity<DeviceLocationResponseDto> getDeviceLocationInfo(
-            @PathVariable String deviceId) {
+            @PathVariable String deviceId,
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal
+    ) {
         log.info("Received location request for device: {}", deviceId);
         try {
             DeviceLocationResponseDto response = deviceService.getDeviceLocation(deviceId);

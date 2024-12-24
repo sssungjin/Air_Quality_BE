@@ -1,9 +1,11 @@
 package com.sungjin.airquailitymonitordemo.service;
 
+import com.sungjin.airquailitymonitordemo.dto.request.user.ParticipantRegistrationRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.request.user.UserRegistrationRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.request.user.UserUpdateRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.response.user.UserResponseDto;
 import com.sungjin.airquailitymonitordemo.entity.User;
+import com.sungjin.airquailitymonitordemo.entity.enums.UserRole;
 import com.sungjin.airquailitymonitordemo.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +77,24 @@ public class UserService {
             throw new EntityNotFoundException("User not found with ID: " + id);
         }
         userRepository.deleteById(id);
+    }
+
+    public UserResponseDto registerParticipant(ParticipantRegistrationRequestDto request) {
+        if (userRepository.existsByEmail(request.email())) {
+            throw new IllegalArgumentException("Email already in use");
+        }
+
+        User user = User.builder()
+                .email(request.email())
+                .password(passwordEncoder.encode(request.password()))
+                .name(request.name())
+                .role(UserRole.PARTICIPANT)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        userRepository.save(user);
+        return new UserResponseDto(user.getId(), user.getEmail(), user.getName(), user.getRole(), user.getKibanaAccessKey(), user.getCreatedAt(), user.getUpdatedAt());
     }
 
     private UserResponseDto convertToDto(User user) {

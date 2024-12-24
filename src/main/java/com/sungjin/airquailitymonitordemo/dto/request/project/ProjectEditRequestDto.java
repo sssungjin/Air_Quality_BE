@@ -1,6 +1,9 @@
 package com.sungjin.airquailitymonitordemo.dto.request.project;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record ProjectEditRequestDto(
-        String projectName,
-        String description
+        @NotBlank String projectName,
+        @NotBlank String description,
+        @NotBlank String collectionMethod
 ) {}
