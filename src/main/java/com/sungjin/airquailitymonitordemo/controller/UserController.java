@@ -5,6 +5,7 @@ import com.sungjin.airquailitymonitordemo.dto.request.user.UserLoginRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.request.user.UserRegistrationRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.request.user.UserUpdateRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.response.jwt.JwtResponseDto;
+import com.sungjin.airquailitymonitordemo.dto.response.user.UserLoginResponseDto;
 import com.sungjin.airquailitymonitordemo.dto.response.user.UserResponseDto;
 import com.sungjin.airquailitymonitordemo.entity.User;
 import com.sungjin.airquailitymonitordemo.security.CustomUserPrincipal;
@@ -50,24 +51,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginRequestDto request) {
+    public ResponseEntity<UserLoginResponseDto> login(@RequestBody UserLoginRequestDto request) {
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.email(), request.password())
-            );
-
-            User user = userService.findByEmail(request.email());
-            if (user == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-            }
-
-            String token = jwtTokenProvider.generateToken(user.getEmail());
-            return ResponseEntity.ok(new JwtResponseDto(token));
+            UserLoginResponseDto response = userService.login(request);
+            return ResponseEntity.ok(response);
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         } catch (Exception e) {
             log.error("Error during login: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

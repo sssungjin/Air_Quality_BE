@@ -33,6 +33,20 @@ public class ProjectController {
         }
     }
 
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ProjectResponseDto> getProject(@PathVariable Long projectId) {
+        try {
+            ProjectResponseDto response = projectService.getProject(projectId);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e) {
+            log.error("Project not found with ID: {}", projectId, e);
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            log.error("Error in getProject: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping("/device/{deviceId}")
     public ResponseEntity<ProjectResponseDto> getProjectByDeviceId(@PathVariable String deviceId) {
         try {
@@ -47,8 +61,15 @@ public class ProjectController {
         }
     }
 
+    /*
+     * 프로젝트 수정 API
+     * Security: PM, ADMIN 권한 필요
+     * @param projectId
+     * @param request
+     * @return
+     */
     @PutMapping("/{projectId}")
-    @PreAuthorize("hasRole('PM')")
+    @PreAuthorize("hasRole('PM') or hasRole('ADMIN')")
     public ResponseEntity<ProjectResponseDto> updateProject(
             @PathVariable Long projectId,
             @RequestBody ProjectEditRequestDto request
@@ -65,8 +86,16 @@ public class ProjectController {
         }
     }
 
+
+    /*
+     * 프로젝트 등록 API
+     * Security: PM, ADMIN 권한 필요
+     * @param request
+     * @param userPrincipal
+     * @return
+     */
     @PostMapping("/register")
-    @PreAuthorize("hasRole('PM')")
+    @PreAuthorize("hasRole('PM') or hasRole('ADMIN')")
     public ResponseEntity<ProjectResponseDto> registerProject(
             @RequestBody ProjectRegistrationRequestDto request,
             @AuthenticationPrincipal CustomUserPrincipal userPrincipal) {

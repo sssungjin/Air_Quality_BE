@@ -1,17 +1,21 @@
 package com.sungjin.airquailitymonitordemo.service;
 
 import com.sungjin.airquailitymonitordemo.dto.request.user.ParticipantRegistrationRequestDto;
+import com.sungjin.airquailitymonitordemo.dto.request.user.UserLoginRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.request.user.UserRegistrationRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.request.user.UserUpdateRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.response.user.UserResponseDto;
 import com.sungjin.airquailitymonitordemo.entity.User;
 import com.sungjin.airquailitymonitordemo.entity.enums.UserRole;
 import com.sungjin.airquailitymonitordemo.repository.UserRepository;
+import com.sungjin.airquailitymonitordemo.utils.JwtTokenProvider;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.authentication.BadCredentialsException;
+import com.sungjin.airquailitymonitordemo.dto.response.user.UserLoginResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +28,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public UserResponseDto registerUser(UserRegistrationRequestDto request) {
         if (userRepository.existsByEmail(request.email())) {
@@ -95,6 +100,26 @@ public class UserService {
 
         userRepository.save(user);
         return new UserResponseDto(user.getId(), user.getEmail(), user.getName(), user.getRole(), user.getKibanaAccessKey(), user.getCreatedAt(), user.getUpdatedAt());
+    }
+
+    public UserLoginResponseDto login(UserLoginRequestDto request) {
+        User user = findByEmail(request.email());
+        if (user == null) {
+            throw new BadCredentialsException("Invalid email or password");
+        }
+
+        String token = jwtTokenProvider.generateToken(user.getEmail());
+
+        return new UserLoginResponseDto(
+                user.getId(),
+                user.getEmail(),
+                user.getName(),
+                user.getRole(),
+                user.getKibanaAccessKey(),
+                user.getCreatedAt(),
+                user.getUpdatedAt(),
+                token
+        );
     }
 
     private UserResponseDto convertToDto(User user) {

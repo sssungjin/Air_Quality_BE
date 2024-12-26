@@ -1,5 +1,6 @@
 package com.sungjin.airquailitymonitordemo.controller;
 
+import com.sungjin.airquailitymonitordemo.dto.ApiResponseDto;
 import com.sungjin.airquailitymonitordemo.dto.request.device.DeviceLocationRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.request.device.DeviceRegistrationRequestDto;
 import com.sungjin.airquailitymonitordemo.dto.response.device.DeviceLocationResponseDto;
@@ -8,6 +9,7 @@ import com.sungjin.airquailitymonitordemo.dto.response.device.DeviceResponseDto;
 import com.sungjin.airquailitymonitordemo.entity.SensorData;
 import com.sungjin.airquailitymonitordemo.service.DeviceService;
 import com.sungjin.airquailitymonitordemo.service.SensorDataService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -43,10 +45,14 @@ public class DeviceController {
     }
 
     @GetMapping("/{deviceId}")
-    public ResponseEntity<DeviceResponseDto> getDevice(@PathVariable String deviceId) {
+    public ResponseEntity<?> getDevice(@PathVariable String deviceId) {
         try {
             DeviceResponseDto device = deviceService.getDevice(deviceId);
             return ResponseEntity.ok(device);
+        } catch (EntityNotFoundException e) {
+            log.error("Device not found with ID: {}", deviceId, e);
+            ApiResponseDto response = new ApiResponseDto("error", "Device not registered");
+            return ResponseEntity.status(HttpStatus.GONE).body(response);
         } catch (Exception e) {
             log.error("Error getting device info", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

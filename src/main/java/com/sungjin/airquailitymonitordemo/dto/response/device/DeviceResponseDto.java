@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 public record DeviceResponseDto(
         String deviceId,
-        String userName,
-        String userEmail,
+//        String userName,
+//        String userEmail,
         Long projectId,
         DeviceLocationDto location,
         LocalDateTime createdAt,

@@ -28,11 +28,11 @@ public class Device {
     @Column
     private String description;
 
-    @Column
-    private String userName;
-
-    @Column
-    private String userEmail;
+//    @Column
+//    private String userName;
+//
+//    @Column
+//    private String userEmail;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")

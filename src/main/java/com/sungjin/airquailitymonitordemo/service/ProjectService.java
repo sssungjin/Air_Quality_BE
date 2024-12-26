@@ -39,6 +39,13 @@ public class ProjectService {
         }
     }
 
+    public ProjectResponseDto getProject(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with ID: " + projectId));
+
+        return convertToDto(project);
+    }
+
     private ProjectResponseDto convertToDto(Project project) {
         return new ProjectResponseDto(
                 project.getProjectId(),

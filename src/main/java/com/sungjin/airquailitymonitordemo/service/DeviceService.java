@@ -40,8 +40,8 @@ public class DeviceService {
 
         return new DeviceResponseDto(
                 device.getDeviceId(),
-                device.getUserName(),
-                device.getUserEmail(),
+//                device.getUserName(),
+//                device.getUserEmail(),
                 device.getProject() != null ? device.getProject().getProjectId() : null,
                 locationDto,
                 device.getCreatedAt(),
@@ -65,8 +65,8 @@ public class DeviceService {
             Device device = deviceRepository.findById(deviceId)
                     .map(existingDevice -> {
                         log.info("Updating existing device: {}", deviceId);
-                        existingDevice.setUserName(request.userName());
-                        existingDevice.setUserEmail(request.userEmail());
+//                        existingDevice.setUserName(request.userName());
+//                        existingDevice.setUserEmail(request.userEmail());
                         existingDevice.setProject(project);
                         existingDevice.setTransmissionMode(request.transmissionMode());
                         existingDevice.setUploadInterval(request.uploadInterval());
@@ -76,8 +76,8 @@ public class DeviceService {
                         log.info("Creating new device: {}", deviceId);
                         return Device.builder()
                                 .deviceId(deviceId)
-                                .userName(request.userName())
-                                .userEmail(request.userEmail())
+//                                .userName(request.userName())
+//                                .userEmail(request.userEmail())
                                 .project(project)
                                 .transmissionMode(request.transmissionMode())
                                 .uploadInterval(request.uploadInterval())
